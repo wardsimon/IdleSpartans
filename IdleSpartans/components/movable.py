@@ -104,6 +104,9 @@ class Tank(Movable):
         if self.get_distance(my_base.x, my_base.y) < 15 and np.sum([tank.get_distance(my_base.x, my_base.y) < 15 for tank in self._world.world_objects["tanks"].values()]) < 6:
             dx = np.random.randint(3, 6)
             dy = np.random.randint(3, 6)
+            tanks = self._world.closest_tank(self.x, self.y)
+            if tanks is not None and self.get_distance(tanks.x, tanks.y) < 20:
+                self.goto(tanks.x, tanks.y)
             if self.get_distance(my_base.x + dx, my_base.y + dy) == 0:
                 self.stop()
             else:
@@ -145,9 +148,8 @@ class Ship(Movable):
                 self.set_heading(np.random.random() * 360)
         else:
             closest_ship = self._world.closest_ship(self.x, self.y)
-            if closest_ship is not None:
+            if closest_ship is not None and self.get_distance(self.x, self.y) < 40:
                 self.goto(closest_ship.x, closest_ship.y)
-                return
 
 
 class Jet(Movable):
