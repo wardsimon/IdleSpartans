@@ -86,10 +86,10 @@ class Base(Common):
                 self.build_mine()
             else:
                 return
-        if self.crystal > self.cost('tank') and len(self.tanks) < 6:
-            self.build_tank(heading=360 * np.random.random())
-            return
-        if self.crystal > self.cost('ship') and len(self.ships) < 3:
+        # if self.crystal > self.cost('tank') and len(self.tanks) < 2:
+        #     self.build_tank(heading=360 * np.random.random())
+        #     return
+        if self.crystal > self.cost('ship') and len(self.ships) < 2:
             self.build_ship(heading=360 * np.random.random())
         if self.crystal > self.cost('jet'):
             self.build_jet(heading=360 * np.random.random())

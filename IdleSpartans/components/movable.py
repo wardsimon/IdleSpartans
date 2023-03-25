@@ -101,11 +101,11 @@ class Tank(Movable):
 
         my_base = self._world.my_closest("bases", self.x, self.y)
 
-        if self.get_distance(my_base.x, my_base.y) < 15 and np.sum([tank.get_distance(my_base.x, my_base.y) < 15 for tank in self._world.world_objects["tanks"].values()]) < 6:
+        if self.get_distance(my_base.x, my_base.y) < 15 and np.sum([tank.get_distance(my_base.x, my_base.y) < 15 for tank in self._world.world_objects["tanks"].values()]) < 2:
             dx = np.random.randint(3, 6)
             dy = np.random.randint(3, 6)
             tanks = self._world.closest_tank(self.x, self.y)
-            if tanks is not None and self.get_distance(tanks.x, tanks.y) < 20:
+            if tanks is not None and self.get_distance(tanks.x, tanks.y) < 40:
                 self.goto(tanks.x, tanks.y)
             if self.get_distance(my_base.x + dx, my_base.y + dy) == 0:
                 self.stop()
@@ -118,11 +118,11 @@ class Tank(Movable):
             self.goto(closest_bases.x, closest_bases.y)
             return
         closest_tanks = self._world.closest_tank(self.x, self.y)
-        if closest_tanks is not None:
+        if closest_tanks is not None and self.get_distance(closest_tanks.x, closest_tanks.y) < 30:
             self.goto(closest_tanks.x, closest_tanks.y)
             return
         closest_jets = self._world.closest_jet(self.x, self.y)
-        if closest_jets is not None:
+        if closest_jets is not None and self.get_distance(closest_jets.x, closest_jets.y) < 30:
             self.goto(closest_jets.x, closest_jets.y)
             return
         if self.stuck:
@@ -141,14 +141,14 @@ class Ship(Movable):
     def action(self):
         if self.stuck:
             nearest_base = self._world.my_closest("bases", self.x, self.y)
-            if (nearest_base is not None and self.get_distance(nearest_base.x, nearest_base.y) > 40) or len(self._world.world_objects["bases"]) < 3:
+            if (nearest_base is not None and self.get_distance(nearest_base.x, nearest_base.y) > 80) or len(self._world.world_objects["bases"]) == 1:
                 self.convert_to_base()
                 return
             else:
                 self.set_heading(np.random.random() * 360)
         else:
             closest_ship = self._world.closest_ship(self.x, self.y)
-            if closest_ship is not None and self.get_distance(self.x, self.y) < 40:
+            if closest_ship is not None and self.get_distance(self.x, self.y) < 30:
                 self.goto(closest_ship.x, closest_ship.y)
 
 
